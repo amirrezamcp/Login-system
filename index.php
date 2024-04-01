@@ -1,3 +1,7 @@
+<?php
+	require_once "src/CsrfToken.php";
+	use src\Csrftoken\CsrfToken;
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -34,10 +38,13 @@
 			</div>
 			<div class="register-show">
 				<h2>REGISTER</h2>
-				<input type="text" placeholder="Email">
-				<input type="password" placeholder="Password">
-				<input type="password" placeholder="Confirm Password">
-				<input type="button" value="Register">
+				<form action="" class="register">
+					<input type="hidden" name="Csrf_Token" value="<?= CsrfToken::generate(); ?>">
+					<input type="text" placeholder="Email">
+					<input type="password" placeholder="Password">
+					<input type="password" placeholder="Confirm Password">
+					<input type="button" value="Register">
+				</form>
 			</div>
 		</div>
 	</div>
