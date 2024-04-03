@@ -1,5 +1,5 @@
 <?php
-namespace Database;
+namespace Models;
 
 class Database {
     private $host = 'localhost';
@@ -31,15 +31,3 @@ class Database {
         return $stmt;
     }
 }
-class user extends Database {
-    public function gzxczet($id) {
-        $sql = "SELECT * FROM users WHERE id =?";
-        $stmt = $this->executeStatement($sql, $id);
-        $result = $stmt->get_result();
-        return $result->fetch_assoc();
-    }
-}
-
-$usertable = new user();
-$user = $usertable->gzxczet([1]);
-var_dump($user);
