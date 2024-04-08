@@ -31,4 +31,16 @@ class Token extends Database{
         $result = $stmt->get_result();
         return $result->fetch_assoc();
     }
+
+    public function compareToken($user_id, $type, $userToken) {
+        $lastValidToken = $this->getToken($user_id, $type);
+        if($lastValidToken === null) {
+            return false;
+        }
+        if($lastValidToken['token'] === $userToken) {
+            return true;
+        }else{
+            return false;
+        }
+    }
 }
