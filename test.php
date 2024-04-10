@@ -24,8 +24,11 @@ use Models\Token;
 // var_dump($user);
 
 $user_id = 1;
+// $type = "email";
 $type = "password";
+$userToken = "f4752cad7cc1c748426f18a5cf1162e60605e5644894674259550837f734306d";
 $obj = new Token();
 // $token = $obj->saveToken($user_id, $type);
-$token = $obj->getToken ($user_id, $type);
+// $token = $obj->getToken ($user_id, $type);
+$token = $obj->compareToken($user_id, $type, $userToken);
 var_dump($token);
