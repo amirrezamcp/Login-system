@@ -38,9 +38,23 @@ class Token extends Database{
             return false;
         }
         if($lastValidToken['token'] === $userToken) {
+            $result = $this->useToken($lastValidToken['token']);
             return true;
         }else{
             return false;
         }
     }
+    
+public function useToken($token) {
+    $sql = "UPDATE tokens SET used = '1' WHERE token = ?";
+    $params = [
+        $token
+    ];
+    $stmt = $this->executeStatement($sql, $params);
+    if($stmt->affected_rows == 1) {
+        return true;
+    }else{
+        return false;
+    }
+}
 }
