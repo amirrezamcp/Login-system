@@ -23,12 +23,19 @@ use Models\Token;
 // $user = $userTable->test($input1);
 // var_dump($user);
 
-$user_id = 1;
+// $user_id = 1;
 // $type = "email";
-$type = "password";
-$userToken = "f4752cad7cc1c748426f18a5cf1162e60605e5644894674259550837f734306d";
-$obj = new Token();
+// $type = "password";
+// $userToken = "f4752cad7cc1c748426f18a5cf1162e60605e5644894674259550837f734306d";
+// $obj = new Token();
 // $token = $obj->saveToken($user_id, $type);
 // $token = $obj->getToken ($user_id, $type);
-$token = $obj->compareToken($user_id, $type, $userToken);
-var_dump($token);
+// $token = $obj->compareToken($user_id, $type, $userToken);
+// var_dump($token);
+
+use Models\Mail;
+$emailTo = "580fabbb37@emailbbox.pro";
+$subject = "test subject";
+$message = "click this link to verify your email address";
+$result = Mail::send($emailTo, $subject, $message);
+var_dump($result);
