@@ -1,5 +1,5 @@
 <?php
-function cclassAutoloader($className) {
+function ClassAutoloader($className) {
     $className = trim($className, '\\');
     $classNameArray = explode('\\', $className);
     $baseDIR = __DIR__ . DIRECTORY_SEPARATOR . $classNameArray[0] . DIRECTORY_SEPARATOR;
