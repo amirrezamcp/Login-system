@@ -1,11 +1,14 @@
 <?php
-function ClassAutoloader($className) {
-    $baseDir = __DIR__ . DIRECTORY_SEPARATOR . "Models" . DIRECTORY_SEPARATOR;
-    $className = trim($className,'\\');
-    $className = explode('\\',$className)[1];
-    $filePath = $baseDir . $className . ".php";
+function cclassAutoloader($className) {
+    $className = trim($className, '\\');
+    $classNameArray = explode('\\', $className);
+    $baseDIR = __DIR__ . DIRECTORY_SEPARATOR . $classNameArray[0] . DIRECTORY_SEPARATOR;
+    $className = $classNameArray[1];
+    $filePath = $baseDIR . $className . ".php";
+
     if(file_exists($filePath)) {
-        include_once $filePath;
+        include_once($filePath);
     }
 }
-spl_autoload_register("ClassAutoloader");
+
+spl_autoload_register("classAutoloader");
