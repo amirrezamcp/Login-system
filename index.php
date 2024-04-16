@@ -1,6 +1,19 @@
 <?php
-	require_once "src/CsrfToken.php";
+	require_once "autoload.php";
+	require_once 'src/AuthToken.php';
+	require_once 'src/CsrfToken.php';
+
 	use src\Csrftoken\CsrfToken;
+	use src\Semej\Semej;
+	use Models\AuthUser;
+
+	// REGISTER
+	if(isset($_POST['register_btn']) && $_SERVER['REQUEST_METHOD'] === 'POST') {
+	$Csrf_Token = $_POST['Csrf_Token'];
+	$data = $_POST['frm'];
+	$authUser = new AuthUser();
+	$authUser->register($Csrf_Token, $data);
+	}
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -38,12 +51,12 @@
 			</div>
 			<div class="register-show">
 				<h2>REGISTER</h2>
-				<form action="" class="register">
+				<form action="<?= htmlspecialchars($_SERVER['PHP_SELF']);  ?>" class="register" method="post">
 					<input type="hidden" name="Csrf_Token" value="<?= CsrfToken::generate(); ?>">
-					<input type="text" placeholder="Email">
-					<input type="password" placeholder="Password">
-					<input type="password" placeholder="Confirm Password">
-					<input type="button" value="Register">
+					<input type="text" placeholder="Email" name="frm[email]">
+					<input type="password" placeholder="Password" name="frm[password]">
+					<input type="password" placeholder="Confirm Password" name="frm[confirm_password]">
+					<input type="submit" value="Register" name="register_btn">
 				</form>
 			</div>
 		</div>
@@ -51,6 +64,8 @@
 
     <script src="http://code.jquery.com/jquery-1.11.1.min.js"></script>
     <script src="http://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="assets/js/script.js"></script>
+	<?php Semej::alert(); ?>
 </body>
 </html>
