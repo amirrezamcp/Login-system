@@ -32,8 +32,10 @@ class AuthUser extends Database {
         ];
         $stmt = $this->executeStatement($sql, $params);
         if($stmt->affected_rows === 1) {
-            Semej::set('ok', 'user register', 'please confirm your email address.');
-            header("Location: index.php");die;
+            $lastInsert_id = $stmt->insert_id;
+            $_token = new Token();
+            $token = $_token->saveToken($lastInsert_id, 'email');
+            $this->sendActivationLinks($formData['email'], $lastInsert_id);
         }else{
             Semej::set('error', 'user register failed', 'User Register failed.');
             header("Location: index.php");die;
@@ -41,7 +43,6 @@ class AuthUser extends Database {
     }
     // check user email exists
     public function checkEmail($email) {
-        // echo $email;
         $sql = "SELECT email FROM users WHERE email = ?";
         $params = [
             $email
@@ -56,7 +57,13 @@ class AuthUser extends Database {
         }
     }
     // send activation link to new registered user
-    public function sendActivationLinks() {
-        // generate token and send link to user email address
+    public function sendActivationLinks($email, $user_id) {
+        $_token = new Token();
+        $token = $_token->getToken($user_id, 'email');
+        $subject = "Activation Link";
+        $message = "http://localhost/PHP-Expert/PHP-Project/Login-system/verifyEmail.php?token=" . $token['token'];
+        $mail = new Mail;
+        $result = $mail->send($email, $subject, $message);
+        var_dump($result);die;
     }
 }
