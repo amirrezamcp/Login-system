@@ -35,7 +35,14 @@ class AuthUser extends Database {
             $lastInsert_id = $stmt->insert_id;
             $_token = new Token();
             $token = $_token->saveToken($lastInsert_id, 'email');
-            $this->sendActivationLinks($formData['email'], $lastInsert_id);
+            $finalResult = $this->sendActivationLinks($formData['email'], $lastInsert_id);
+            if($finalResult) {
+                Semej::set('ok', 'user register sucessfully', 'please check your inbox');
+                header("Location: index.php");die;
+            }else{
+                Semej::set('error', 'user register failed', 'User Register failed.');
+                header("Location: index.php");die;
+            }
         }else{
             Semej::set('error', 'user register failed', 'User Register failed.');
             header("Location: index.php");die;
@@ -61,9 +68,9 @@ class AuthUser extends Database {
         $_token = new Token();
         $token = $_token->getToken($user_id, 'email');
         $subject = "Activation Link";
-        $message = "http://localhost/PHP-Expert/PHP-Project/Login-system/verifyEmail.php?token=" . $token['token'];
+        $message = "http://localhost/PHP-Expert/PHP-Project/Login-system/verifyEmail.php?token=" . $token['token'] . "&email=" . $email;
         $mail = new Mail;
         $result = $mail->send($email, $subject, $message);
-        var_dump($result);die;
+        return $result;
     }
 }
