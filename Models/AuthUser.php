@@ -1,5 +1,7 @@
 <?php
 namespace Models;
+
+use src\Csrftoken\CsrfToken;
 use src\Semej\Semej;
 
 class AuthUser extends Database {
@@ -72,5 +74,13 @@ class AuthUser extends Database {
         $mail = new Mail;
         $result = $mail->send($email, $subject, $message);
         return $result;
+    }
+
+    public function login($Csrf_Token, $formData) {
+        $Csrf_Token = $this->sanitizeInput($Csrf_Token);
+        $formData = $this->sanitizeInput($formData);
+
+        $check_Csrf_Token = CsrfToken::validate($Csrf_Token);
+        
     }
 }
