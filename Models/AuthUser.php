@@ -81,6 +81,28 @@ class AuthUser extends Database {
         $formData = $this->sanitizeInput($formData);
 
         $check_Csrf_Token = CsrfToken::validate($Csrf_Token);
-        
+        if(!$check_Csrf_Token) {
+            Semej::set('error', 'invalid csrf token', 'please try again');
+            header("Location: index.php");die;
+        }
+        $sql = "SELECT * FROM users WHERE email = ?";
+        $params= [
+            $formData['email']
+        ];
+        $stmt = $this->executeStatement($sql, $params);
+        $result = $stmt->get_result();
+        $result = $result->fetch_assoc();
+        if(is_null($result)) {
+            Semej::set('error', 'invalid credentals', 'Invalid email or password');
+            header("Location: index.php");die; 
+        }
+        if(!password_verify($formData['password'], $result['password'])) {
+            Semej::set('error', 'invalid credentals', 'Invalid email or password');
+            header("Location: index.php");die; 
+        }
+        if($result['is_email_verified'] != '1') {
+            Semej::set('error', 'email not verified', 'Email not verified');
+            header("Location: index.php");die; 
+        }
     }
 }
