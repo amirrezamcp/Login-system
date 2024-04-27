@@ -7,9 +7,6 @@
 	use src\Semej\Semej;
 	use Models\AuthUser;
 
-	if($_SERVER['REQUEST_METHOD'] === 'GET') {
-		$generated_Csrf_Token = CsrfToken::generate();
-	}
 	// REGISTER
 	if(isset($_POST['register_btn']) && $_SERVER['REQUEST_METHOD'] === 'POST') {
 	$Csrf_Token = $_POST['Csrf_Token'];
@@ -24,6 +21,11 @@
 		$data = $_POST['frm'];
 		$authUser = new AuthUser();
 		$authUser->login($Csrf_Token, $data);
+	}
+
+	// GENERATE CsrfToken
+	if($_SERVER['REQUEST_METHOD'] === 'GET') {
+		$generated_Csrf_Token = CsrfToken::generate();
 	}
 ?>
 <!DOCTYPE html>
