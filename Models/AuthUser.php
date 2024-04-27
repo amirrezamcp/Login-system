@@ -101,8 +101,19 @@ class AuthUser extends Database {
             header("Location: index.php");die; 
         }
         if($result['is_email_verified'] != '1') {
-            Semej::set('error', 'email not verified', 'Email not verified');
-            header("Location: index.php");die; 
+            // Semej::set('error', 'email not verified', 'Email not verified');
+            // header("Location: index.php");die; 
+            $_token = new Token();
+            $token = $_token->getToken($result['id'], 'email');
+            if(is_null($token)) {
+                $_token->saveToken($result['id'], 'email');
+            }
+            $result = $this->sendActivationLinks($result['email'], $result['id']);
+            if($result) {
+                Semej::set('ok', 'email sent', 'check your inbox to verify your account.');
+                header("Location: index.php");die;
+            }
         }
+        echo "login";die;
     }
 }
