@@ -7,26 +7,26 @@
 	use src\Semej\Semej;
 	use Models\AuthUser;
 
-	// REGISTER
-	if(isset($_POST['register_btn']) && $_SERVER['REQUEST_METHOD'] === 'POST') {
-	$Csrf_Token = $_POST['Csrf_Token'];
+// REGISTER FORM
+
+if(isset($_POST['register_btn']) && $_SERVER['REQUEST_METHOD'] === 'POST') {
+	$csrf_token = $_POST['csrf_token'];
 	$data = $_POST['frm'];
 	$authUser = new AuthUser();
-	$authUser->register($Csrf_Token, $data);
-	}
+	$authUser->register($csrf_token, $data);
+}
 
-	// LOGIN
-	if(isset($_POST['login_btn']) && $_SERVER['REQUEST_METHOD'] === 'POST') {
-		$Csrf_Token = $_POST['Csrf_Token'];
-		$data = $_POST['frm'];
-		$authUser = new AuthUser();
-		$authUser->login($Csrf_Token, $data);
-	}
+// LOGIN FORM
+if(isset($_POST['login_btn']) && $_SERVER['REQUEST_METHOD'] === 'POST') {
+	$csrf_token = $_POST['csrf_token'];
+	$data = $_POST['frm'];
+	$authUser = new AuthUser();
+	$authUser->login($csrf_token, $data);
+}
 
-	// GENERATE CsrfToken
-	if($_SERVER['REQUEST_METHOD'] === 'GET') {
-		$generated_Csrf_Token = CsrfToken::generate();
-	}
+// generate csrf token
+$generated_csrf_token = CsrfToken::generate();
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -53,26 +53,26 @@
 			<label id="label-login" for="log-login-show">Register</label>
 			<input type="radio" name="active-log-panel" id="log-login-show">
 		</div>
-	
+							
 		<div class="white-panel">
 			<div class="login-show">
-				<form action="<?= htmlspecialchars($_SERVER['PHP_SELF']); ?>" class="login" method="post">
-					<h2>LOGIN</h2>
-					<input type="hidden" name="Csrf_Token" value="<?= $generated_Csrf_Token ?>">
-					<input type="text" placeholder="Email" name="frm[email]">
-					<input type="password" placeholder="Password" name="frm[password]">
-					<input type="submit" value="Login">
-					<a href="">Forgot password?</a>	
+				<form action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']); ?>" method="post">
+				<h2>LOGIN</h2>
+				<input name="csrf_token" type="hidden" value="<?php echo $generated_csrf_token; ?>">
+				<input name="frm[email]" type="text" placeholder="Email">
+				<input name="frm[password]" type="password" placeholder="Password">
+				<input type="submit" value="Login" name="login_btn">
+				<a href="">Forgot password?</a>
 				</form>
 			</div>
 			<div class="register-show">
 				<h2>REGISTER</h2>
-				<form action="<?= htmlspecialchars($_SERVER['PHP_SELF']);  ?>" class="register" method="post">
-					<input type="hidden" name="Csrf_Token" value="<?= $generated_csrf_token; ?>">
-					<input type="text" placeholder="Email" name="frm[email]">
-					<input type="password" placeholder="Password" name="frm[password]">
-					<input type="password" placeholder="Confirm Password" name="frm[confirm_password]">
-					<input type="submit" value="Register" name="register_btn">
+				<form action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']); ?>" class="register" method="post">
+				<input name="csrf_token" type="hidden" value="<?php echo $generated_csrf_token; ?>">
+				<input name="frm[email]" type="text" placeholder="Email">
+				<input name="frm[password]" type="password" placeholder="Password">
+				<input name="frm[confirm_password]" type="password" placeholder="Confirm Password">
+				<input name="register_btn" type="submit" value="Register">
 				</form>
 			</div>
 		</div>

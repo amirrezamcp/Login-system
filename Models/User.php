@@ -3,6 +3,7 @@ namespace Models;
 
 class User extends Database {
     use SanitizerTrait;
+
     public function getIdByEmail($email) {
         $email = $this->sanitizeInput($email);
         $sql = "SELECT id FROM users WHERE email = ?";
@@ -13,6 +14,7 @@ class User extends Database {
         $result = $stmt->get_result();
         return $result->fetch_assoc();
     }
+
     public function verifyEmail($id) {
         $id = $this->sanitizeInput($id);
         $sql = "UPDATE users SET is_email_verified = '1' WHERE id = ?";
