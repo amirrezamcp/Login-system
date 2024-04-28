@@ -1,6 +1,7 @@
 <?php
 namespace Models;
 
+use src\AuthToken\AuthToken;
 use src\Csrftoken\CsrfToken;
 use src\Semej\Semej;
 
@@ -126,6 +127,9 @@ class AuthUser extends Database {
                 header("Location: index.php");die;
             }   
         }
-        echo 'login';    
+        // login verified
+        $_SESSION['username'] = $result['name'];
+        AuthToken::generate();
+        header("Location: dashboard/dashboard.php");die;
     }
 }
