@@ -66,4 +66,36 @@ class User extends Database {
         $result = $mail->send($email, $subject, $message);
         return $result;
     }
+    
+    // Update password
+    public function updatePassword($email, $token, $passwords) {
+        
+        $user_id = $this->getIdByEmail($email)['id'];
+        if(is_null($user_id)) {
+            Semej::set('error', 'user not found', 'error user not found');
+            header('Location: index.php');die;
+        }
+        $_token = new Token();
+        $check_token = $_token->compareToken($user_id, 'password', $token);
+        if(!$check_token) {
+            Semej::set('error', 'user not found', 'Invalid Token');
+            header('Location: index.php');die;
+        }
+        $hashed_password = password_hash($passwords['password'], PASSWORD_DEFAULT);
+        $sql = "UPDATE users SET password = ? WHERE id = ?";
+        $params = [
+            $hashed_password,
+            $user_id
+        ];
+        $stmt = $this->executeStatement($sql, $params);
+        if($stmt->affected_rows == 1) {
+            Semej::set('ok', 'updated', 'password updated successfully.');
+            header('Location: index.php');die;
+        }else{
+            Semej::set('error', 'update failed.', 'update password failed.');
+            header('Location: index.php');die;
+        }
+
+    }
+
 }
