@@ -56,18 +56,18 @@ $generated_csrf_token = CsrfToken::generate();
 							
 		<div class="white-panel">
 			<div class="login-show">
-				<form action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']); ?>" method="post">
+				<form action="<?= htmlspecialchars($_SERVER['PHP_SELF']); ?>" method="post">
 				<h2>LOGIN</h2>
 				<input name="csrf_token" type="hidden" value="<?php echo $generated_csrf_token; ?>">
 				<input name="frm[email]" type="text" placeholder="Email">
 				<input name="frm[password]" type="password" placeholder="Password">
 				<input type="submit" value="Login" name="login_btn">
-				<a href="">Forgot password?</a>
+				<a href="forgotPassword.php">Forgot password?</a>
 				</form>
 			</div>
 			<div class="register-show">
 				<h2>REGISTER</h2>
-				<form action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']); ?>" class="register" method="post">
+				<form action="<?= htmlspecialchars($_SERVER['PHP_SELF']); ?>" class="register" method="post">
 				<input name="csrf_token" type="hidden" value="<?php echo $generated_csrf_token; ?>">
 				<input name="frm[email]" type="text" placeholder="Email">
 				<input name="frm[password]" type="password" placeholder="Password">
