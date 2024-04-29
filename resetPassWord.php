@@ -33,6 +33,15 @@ if($token != $lastValidToken) {
     header("Location: index.php");die;
 }
 
+// if token and email are valid
+if(isset($_POST['btn']) && $_SERVER['REQUEST_METHOD'] === 'POST') {
+    $password = $_POST['frm'];
+    if($password['password'] !== $password['confirm_password']) {
+        Semej::set('error', 'Password mismatch', 'Password mismatch.');
+        header('Location: resetPassWord.php');die;
+    }
+    $_user->updatePassword($email, $token, $passwords);
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -48,7 +57,7 @@ if($token != $lastValidToken) {
     <div class="login-reg-panel justify-content-center align-items-center row">
         <fieldset>
             <legend>Update Password for : <?= htmlspecialchars($email); ?> </legend>
-            <form action="<?= htmlspecialchars($_SERVER['PHP_SELF']); ?>" method="post">
+            <form action="<?= htmlspecialchars($_SERVER['PHP_SELF']) . "?token=$token&&email=$email"; ?>" method="post">
                 <input type="hidden" name="csrf_token" value="<?php echo CsrfToken::generate(); ?>">
                 <div class="form-group">
                     <input type="password" name="frm[password]" id="" class="form_control" placeholder="Password">
